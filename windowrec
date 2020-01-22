@@ -17,31 +17,32 @@ function getarea(){
 }
 
 function help(){
-  echo "usage: windowrec.sh [-options]"
+  echo "usage: windowrec -commands"
   echo " "
   echo "	-help      print this message"
+  echo "	           by default recording at 60 fps and no mouse pointer with audio"
   echo "	-15        record only 15 minutes"
   echo "	-tutorial  record full screen at 30 fps and mouse pointer"
   echo "	-lossless  record with minimal compression"
 }
 
-if [ ! "$(xwininfo -version)" ] || [ ! "$(ffmpeg -version)" ]; then
-  echo "Please install the xwininfo and ffmpeg..."
+if [ ! "$(xwininfo -version)" ] || [ ! "$(ffmpeg -version)" ] || [ ! "$(pulseaudio --version)" ]; then
+  echo "Please install the xwininfo and ffmpeg and pulseaudio..."
 elif [[ ! $1 ]]; then
   getmainwindow
-  ffmpeg -video_size $width'x'$height -framerate 60 -f x11grab -draw_mouse 1 -i :0 -f pulse -ac 2 -i $main -vcodec libx264 -crf 22 -preset ultrafast -threads 4 $HOME/output_`date +%H%M%Y%m%d`.mkv
+  ffmpeg -video_size $width'x'$height -framerate 60 -f x11grab -draw_mouse 0 -i $DISPLAY -f pulse -ac 2 -i $main -vcodec libx264 -crf 22 -preset ultrafast -threads 4 $HOME/output_`date +%H%M%Y%m%d`.mkv
   exit
 elif [[ $1 = "-15" ]]; then
   getarea
-  ffmpeg -video_size $width'x'$height -framerate 60 -f x11grab -draw_mouse 0 -i :0.0'+'$absx','$absy -f pulse -ac 2 -i $main -preset veryfast -to 00:15:00 $HOME/output_`date +%H%M%Y%m%d`.mkv
+  ffmpeg -video_size $width'x'$height -framerate 60 -f x11grab -draw_mouse 0 -i $DISPLAY.0'+'$absx','$absy -f pulse -ac 2 -i $main -preset veryfast -to 00:15:00 $HOME/output_`date +%H%M%Y%m%d`.mkv
   exit
 elif [[ $1 = "-tutorial" ]]; then
   getmainwindow
-  ffmpeg -video_size $width'x'$height -framerate 30 -f x11grab -draw_mouse 1 -i 0 -f pulse -ac 2 -i $main -vcodec libx264 $HOME/output_`date +%H%M%Y%m%d`.mkv
+  ffmpeg -video_size $width'x'$height -framerate 30 -f x11grab -draw_mouse 1 -i $DISPLAY -f pulse -ac 2 -i $main -vcodec libx264 $HOME/output_`date +%H%M%Y%m%d`.mkv
   exit
 elif [[ $1 = "-lossless" ]]; then
   getarea
-  ffmpeg -video_size $width'x'$height -framerate 60 -f x11grab -draw_mouse 0 -i :0.0'+'$absx','$absy -f pulse -ac 2 -i $main -vcodec libx264 -crf 0 -preset ultrafast -threads 4 $HOME/output_`date +%H%M%Y%m%d`.mkv
+  ffmpeg -video_size $width'x'$height -framerate 60 -f x11grab -draw_mouse 0 -i $DISPLAY.0'+'$absx','$absy -f pulse -ac 2 -i $main -vcodec libx264 -crf 0 -preset ultrafast -threads 4 $HOME/output_`date +%H%M%Y%m%d`.mkv
   exit
 elif [[ $1 = "-help" ]]; then
   help
