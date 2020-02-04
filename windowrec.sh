@@ -26,7 +26,7 @@ function help(){
   echo "	-lossless  record with minimal compression"
 }
 
-if [ ! "$(xwininfo -version)" ] || [ ! "$(ffmpeg -version)" ] || [ ! "$(pulseaudio --version)" ]; then
+if [ ! "$(man xwininfo)" ] || [ ! "$(man ffmpeg)" ] || [ ! "$(man pulseaudio)" ]; then
   echo "Please install the xwininfo and ffmpeg and pulseaudio..."
 elif [[ ! $1 ]]; then
   getmainwindow
