@@ -18,7 +18,7 @@ function getarea(){
 
 function help(){
   echo "usage: windowrec -commands"
-  echo " "
+  echo 
   echo "	-help      print this message"
   echo "	           by default recording at 60 fps and no mouse pointer with audio"
   echo "	-15        record only 15 minutes"
@@ -38,7 +38,7 @@ elif [[ $1 = "-15" ]]; then
   exit
 elif [[ $1 = "-tutorial" ]]; then
   getmainwindow
-  ffmpeg -video_size $width'x'$height -framerate 30 -f x11grab -draw_mouse 1 -i $DISPLAY -f pulse -ac 2 -i $main -vcodec libx264 $HOME/output_`date +%H%M%Y%m%d`.mkv
+  ffmpeg -video_size $width'x'$height -framerate 60 -f x11grab -draw_mouse 1 -i $DISPLAY -f pulse -ac 2 -i $main -vcodec libx264 -crf 22 -preset ultrafast -threads 4 $HOME/output_`date +%H%M%Y%m%d`.mp4
   exit
 elif [[ $1 = "-lossless" ]]; then
   getarea
