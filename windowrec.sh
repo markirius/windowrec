@@ -23,6 +23,7 @@ function help(){
   echo "	           by default recording at 60 fps and no mouse pointer with audio"
   echo "	-15        record only 15 minutes"
   echo "	-tutorial  record full screen at 30 fps and mouse pointer"
+	echo "  -winddow   record window area size of a selected window"
   echo "	-lossless  record with minimal compression"
 }
 
@@ -30,20 +31,25 @@ if [ ! "$(man xwininfo)" ] || [ ! "$(man ffmpeg)" ] || [ ! "$(man pulseaudio)" ]
   echo "Please install the xwininfo and ffmpeg and pulseaudio..."
 elif [[ ! $1 ]]; then
   getmainwindow
-  ffmpeg -video_size $width'x'$height -framerate 60 -f x11grab -draw_mouse 0 -i $DISPLAY -f pulse -ac 2 -i $main -vcodec libx264 -crf 22 -preset ultrafast -threads 4 $HOME/output_`date +%H%M%Y%m%d`.mkv
+  ffmpeg -video_size $width'x'$height -framerate 25 -f x11grab -draw_mouse 0 -i $DISPLAY -f pulse -ac 2 -i $main -vcodec libx264 -crf 22 -preset ultrafast -threads 4 $HOME/`date +%H%M%Y%m%d`__output.mkv
   exit
 elif [[ $1 = "-15" ]]; then
   getarea
-  ffmpeg -video_size $width'x'$height -framerate 60 -f x11grab -draw_mouse 0 -i $DISPLAY.0'+'$absx','$absy -f pulse -ac 2 -i $main -preset veryfast -to 00:15:00 $HOME/output_`date +%H%M%Y%m%d`.mkv
+  ffmpeg -video_size $width'x'$height -framerate 60 -f x11grab -draw_mouse 0 -i $DISPLAY.0'+'$absx','$absy -f pulse -ac 2 -i $main -preset veryfast -to 00:15:00 $HOME/`date +%H%M%Y%m%d`__output.mkv
   exit
 elif [[ $1 = "-tutorial" ]]; then
   getmainwindow
-  ffmpeg -video_size $width'x'$height -framerate 60 -f x11grab -draw_mouse 1 -i $DISPLAY -f pulse -ac 2 -i $main -vcodec libx264 -crf 22 -preset ultrafast -threads 4 $HOME/output_`date +%H%M%Y%m%d`.mp4
+  ffmpeg -video_size $width'x'$height -framerate 25 -f x11grab -draw_mouse 1 -i $DISPLAY -f pulse -ac 2 -i $main -vcodec libx264 -crf 22 -preset ultrafast -threads 4 $HOME/`date +%H%M%Y%m%d`__output.mkv
   exit
 elif [[ $1 = "-lossless" ]]; then
   getarea
-  ffmpeg -video_size $width'x'$height -framerate 60 -f x11grab -draw_mouse 0 -i $DISPLAY.0'+'$absx','$absy -f pulse -ac 2 -i $main -vcodec libx264 -crf 0 -preset ultrafast -threads 4 $HOME/output_`date +%H%M%Y%m%d`.mkv
+  ffmpeg -video_size $width'x'$height -framerate 60 -f x11grab -draw_mouse 0 -i $DISPLAY.0'+'$absx','$absy -f pulse -ac 2 -i $main -vcodec libx264 -crf 0 -preset ultrafast -threads 4 $HOME/`date +%H%M%Y%m%d`__output.mkv
   exit
+elif [[ $1 = "-window" ]]; then
+  getarea
+  ffmpeg -video_size $width'x'$height -framerate 25 -f x11grab -draw_mouse 1 -i $DISPLAY.0'+'$absx','$absy -f pulse -ac 2 -i $main -vcodec libx264 -crf 0 -preset ultrafast -threads 4 $HOME/`date +%H%M%Y%m%d`__output.mkv
+  exit
+
 elif [[ $1 = "-help" ]]; then
   help
   exit
