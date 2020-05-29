@@ -31,23 +31,23 @@ if [ ! "$(man xwininfo)" ] || [ ! "$(man ffmpeg)" ] || [ ! "$(man pulseaudio)" ]
   echo "Please install the xwininfo and ffmpeg and pulseaudio..."
 elif [[ ! $1 ]]; then
   getmainwindow
-  ffmpeg -video_size $width'x'$height -framerate 25 -f x11grab -draw_mouse 0 -i $DISPLAY -f pulse -ac 2 -i $main -vcodec libx264 -crf 22 -preset ultrafast -threads 4 $HOME/`date +%H%M%Y%m%d`__output.mkv
+  ffmpeg -video_size $width'x'$height -framerate 25 -f x11grab -draw_mouse 0 -i $DISPLAY -f pulse -ac 2 -i $main -vcodec libx264 -crf 22 -preset ultrafast -threads 4 $HOME/`date +%Y%m%d%H%M`__output.mkv
   exit
 elif [[ $1 = "-15" ]]; then
   getarea
-  ffmpeg -video_size $width'x'$height -framerate 60 -f x11grab -draw_mouse 0 -i $DISPLAY.0'+'$absx','$absy -f pulse -ac 2 -i $main -preset veryfast -to 00:15:00 $HOME/`date +%H%M%Y%m%d`__output.mkv
+  ffmpeg -video_size $width'x'$height -framerate 60 -f x11grab -draw_mouse 0 -i $DISPLAY.0'+'$absx','$absy -f pulse -ac 2 -i $main -preset veryfast -to 00:15:00 $HOME/`date +%Y%m%d%H%M`__output.mkv
   exit
 elif [[ $1 = "-tutorial" ]]; then
   getmainwindow
-  ffmpeg -video_size $width'x'$height -framerate 25 -f x11grab -draw_mouse 1 -i $DISPLAY -f pulse -ac 2 -i $main -vcodec libx264 -crf 22 -preset ultrafast -threads 4 $HOME/`date +%H%M%Y%m%d`__output.mkv
+  ffmpeg -video_size $width'x'$height -framerate 25 -f x11grab -draw_mouse 1 -i $DISPLAY -f pulse -ac 2 -i $main -vcodec libx264 -crf 22 -preset ultrafast -threads 4 $HOME/`date +%Y%m%d%H%M`__output.mkv
   exit
 elif [[ $1 = "-lossless" ]]; then
   getarea
-  ffmpeg -video_size $width'x'$height -framerate 60 -f x11grab -draw_mouse 0 -i $DISPLAY.0'+'$absx','$absy -f pulse -ac 2 -i $main -vcodec libx264 -crf 0 -preset ultrafast -threads 4 $HOME/`date +%H%M%Y%m%d`__output.mkv
+  ffmpeg -video_size $width'x'$height -framerate 60 -f x11grab -draw_mouse 0 -i $DISPLAY.0'+'$absx','$absy -f pulse -ac 2 -i $main -vcodec libx264 -crf 0 -preset ultrafast -threads 4 $HOME/`date +%Y%m%d%H%M`__output.mkv
   exit
 elif [[ $1 = "-window" ]]; then
   getarea
-  ffmpeg -video_size $width'x'$height -framerate 25 -f x11grab -draw_mouse 1 -i $DISPLAY.0'+'$absx','$absy -f pulse -ac 2 -i $main -vcodec libx264 -crf 0 -preset ultrafast -threads 4 $HOME/`date +%H%M%Y%m%d`__output.mkv
+  ffmpeg -video_size $width'x'$height -framerate 25 -f x11grab -draw_mouse 1 -i $DISPLAY.0'+'$absx','$absy -f pulse -ac 2 -i $main -vcodec libx264 -crf 0 -preset ultrafast -threads 4 $HOME/`date +%Y%m%d%H%M`__output.mkv
   exit
 
 elif [[ $1 = "-help" ]]; then
